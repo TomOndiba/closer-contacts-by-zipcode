@@ -11,11 +11,12 @@ class ContactController extends Controller
     function getByCloserZipCode()
     {
         
-        $contacts = Contact::all();
+        $contacts = Contact::all()->toArray();
+        $n = sizeof($contacts);
         $APoints = [];
         $BPoints = [];
         
-        foreach($contacts->cursor() as $contact) {            
+        foreach($contacts as $contact) {            
             $contact->trend = $contact->distanceTo(10000) - $distanceTo(20000);
         }
         
@@ -33,8 +34,8 @@ class ContactController extends Controller
         // to their location inside the array of points
         $middle = floor($n/2);
         if($n % 2 == 0) {
-            $APoints = points.slice(0,middle);
-            $BPoints = points.slice(middle );
+            $APoints = array_slice($contacts, 0, $middle);
+            $BPoints = array_slice($contacts, $middle);
         } else {
             if(n > 1) {
                 $APoints = array_slice($contacts, 0, $middle);
