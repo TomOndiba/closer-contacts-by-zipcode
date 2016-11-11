@@ -14,7 +14,10 @@ class ContactsTableSeeder extends Seeder
     {
         
         $file_path = database_path() . '/seeds/contacts.csv';
+        
         $csv = array_map('str_getcsv', file($file_path) );
+        array_shift($csv);
+        
         $contacts = array_map(function($data) {
             return [
                 'name' => $data[0],
