@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Contact;
+use \App\Repositories\Air;
+use \App\Zipcode;
+use \App\Repositories\ZipcodeRepository;
 
 class ContactController extends Controller
 {
     
     function getByClosestZipCode($zipcodes)
     {
+        // This function assumes all the agents zip codes has been already cached
+        //  TODO: Don't assume!!
+        
+        $cachedZipCodes = Air::get('cached-zip-codes', function() {
+            return Zipcode::all()->keyBy('zipcode')->all();
+        });
         
         $zipcodes = explode(',', $zipcodes);
         $answer = [];
@@ -31,12 +40,25 @@ class ContactController extends Controller
                                 'id' => $agent
                             ],
                             'contact' => $contact,
+                            'location' => $cachedZipCodes[$contact->zipcode]
                         ];
                     }    
                 }                   
                 $answer = [
                     'status' => 'success',
-                    'data' => $clasifiedContacts
+                    'data' => [
+                        'contacts' => $clasifiedContacts,
+                        'agents' => [
+                            'A' => [
+                                'id' => 'A',
+                                'location' => ZipcodeRepository::zipcodeToLatLng($zipcodes[0])
+                            ],
+                            'B' => [
+                                'id' => 'A',
+                                'location' => ZipcodeRepository::zipcodeToLatLng($zipcodes[1])
+                            ]
+                        ]
+                    ] 
                 ];
             }
             
@@ -72,13 +94,16 @@ class ContactController extends Controller
             }
             
             $contact->_trend = $toA - $toB;
+        
         }
+        
+        
 
         // Sort the points according to the treding
-        usort($contacts, function($m, $n)
+        usort($contacts, function($m, $n) use ($zipCodeA, $zipCodeB)
         {
             if($m->_trend == $n->_trend) {
-                return ($this->_hasTheLongestDistance($m,$n)==$m)?1:-1;
+                return ($this->_hasTheLongestDistance($m, $n, $zipCodeA, $zipCodeB)==$m)?-1:1;
             } else {
                 return ($m->_trend - $n->_trend);
             }
@@ -113,19 +138,25 @@ class ContactController extends Controller
         
     }
 
-    function _hasTheLongestDistance($m, $n) {
+    /*
+     * Calculates which agent has the longest path to an agent
+    */    
+    function _hasTheLongestDistance($contactA, $contactB, $agentA_zipcode, $agentB_zipcode) {
 
         $maxDistance;
-        $_obj = $m;
-        $maxDistance = max($m->x, $n->x);
+        $_obj = $contactA;
+        $maxDistance = max(
+            $contactA->distanceTo( $agentA_zipcode ),
+            $contactA->distanceTo( $agentB_zipcode )
+        );
 
-        if($maxDistance < $n->x) {
-            $_obj = $n;
-            $maxDistance = $n->x;
+        if($maxDistance < $contactB->distanceTo($agentA_zipcode)) {
+            $_obj = $contactB;
+            $maxDistance = $contactB->distanceTo($agentA_zipcode);
         }
-        if($maxDistance < $n->y) {
-            $_obj = $n;
-            $maxDistance = $n->y;
+        if($maxDistance < $contactB->distanceTo($agentB_zipcode)) {
+            $_obj = $contactB;
+            $maxDistance = $contactB->distanceTo($agentB_zipcode);
         }
 
         return $_obj;

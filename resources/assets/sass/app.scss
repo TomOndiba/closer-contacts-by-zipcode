@@ -27,7 +27,7 @@
         img {
             position: absolute;
             left: 50%;
-            top: 200px;  
+            top: 30px;  
             transform: translate(-50%, -50%);
         }
     }
@@ -35,4 +35,8 @@
         position: relative;
         min-height: 300px;
     }
+}
+#map {
+    height: 400px;
+    width:100%;
 }

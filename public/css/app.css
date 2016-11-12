@@ -15,12 +15,16 @@
   .loading .loading-layer img {
     position: absolute;
     left: 50%;
-    top: 200px;
+    top: 30px;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%); }
 
 .loading .table-wrapper {
   position: relative;
   min-height: 300px; }
+
+#map {
+  height: 400px;
+  width: 100%; }
 
 /*# sourceMappingURL=app.css.map */

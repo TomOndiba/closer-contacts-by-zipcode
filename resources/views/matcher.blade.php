@@ -7,7 +7,8 @@
         <script>
             window.Laravel = <?php echo json_encode([
                 'csrfToken' => csrf_token(),
-            ]); ?>
+            ]); ?>;
+            var googleMapsKey = 'AIzaSyAaKXuFCQLlNBETalOcg0TmxnGqsxcDVc8';
         </script>
         
         <link rel="stylesheet" type="text/css" href="/css/uikit.css">
@@ -23,8 +24,7 @@
         </div>
         
         
-        
-        
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaKXuFCQLlNBETalOcg0TmxnGqsxcDVc8"></script>
         <script src="/js/app.js"></script>
     
     </body>
