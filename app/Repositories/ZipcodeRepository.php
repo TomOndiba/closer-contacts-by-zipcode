@@ -92,19 +92,22 @@ class ZipcodeRepository {
             //   The less the project relays on external providers, the better
             $google_uri = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . $zipcode;
             $serviceResponse = '';
+            
             try {
                 $serviceResponse = file_get_contents($google_uri);
                 $serviceResponse = rtrim($serviceResponse, "\0");
                 $serviceResponse = json_decode(trim($serviceResponse));
-                $output = $serviceResponse->results[0]->geometry->location;
-                $output->latitude = $output->lat;
-                $output->longitude = $output->lng;
+                if( in_array('postal_code',$serviceResponse->results[0]->types) ) {
+                    $output = $serviceResponse->results[0]->geometry->location;
+                    $output->latitude = $output->lat;
+                    $output->longitude = $output->lng;    
+                }
 
             } catch(\Exception $error) {
                 //$serviceResponse = null;
                 // TODO: Throw error instead of returning value
             }
-
+            
             return $output;                
             
         });
