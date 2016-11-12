@@ -21,6 +21,9 @@ The project has a seeder for the contacts table, this seeder takes the informati
 
 ## Custom commands
 
+Source files:
+* app/Console/Commands/CacheZipcodes.php
+
 ### zipcode:cache
 
 It was included a custom command for feeding the zipcodes table, in order to execute this command call:
@@ -51,9 +54,35 @@ ZIP_CODE_API_KEY: This is the key for https://www.zipcodeapi.com/ API
 
 #### API
 
-#####GET /api/contact/match-closer/{zip code 1},{zip code 2}
+##### GET /api/contact/match-closer/{zip code 1},{zip code 2}
 
-This request groups the contact in two group according to its distance to the zip codes provided. It balances the amount of contacts given to each agent.
+This request groups the contact into two groups according to their distance to the zip codes provided. It balances the amount of contacts given to each agent.
+
+Source files:
+* routes/api.php
+* app/Http/controllers/ContactController.php
+* app/Agent.php
+* app/Contact.php
+* app/Zipcode.php
+* app/Repositores/Air.php (Used for cache purpose, it works well for a light project but it is recommended to switch to REDIS in a huge project)
+
+### Front-end
+
+##### GET /
+
+Provides a form with two inputs and a match button. Both input are for a single zip code, after clicking the match button an ajax request is done to the API. Once the API responses with an array of objects, they table body is created. 
+
+All of this is handle by a Vue.js app. 
+
+Source files:
+* routes/web.php
+* resources/views/matcher.blade.php
+* resources/assets/js/app.js
+* resources/assets/js/components/Contacts.vue
+* resources/assets/sass/app.scss
+
+All of this using the CSS framework uikit
+
 
 
 

@@ -18,24 +18,27 @@ class ContactController extends Controller
         
             $contacts = Contact::all()->all();
             $match = $this->_matchClosest($contacts, $zipcodes[0], $zipcodes[1]);
-            $clasifiedContacts = [];
-            $agents = ['A', 'B'];
-            foreach($agents as $agent) {
-                foreach($match[$agent] as $contact) {
-                    $clasifiedContacts[] = [
-                        'agent' => [
-                            'id' => $agent
-                        ],
-                        'contact' => $contact,
-                    ];
-                }    
+            
+            if( ISSET($match['status']) && $match['status'] == 'error' ) {
+                $answer = $match;             
+            } else {                
+                $clasifiedContacts = [];
+                $agents = ['A', 'B'];
+                foreach($agents as $agent) {
+                    foreach($match[$agent] as $contact) {
+                        $clasifiedContacts[] = [
+                            'agent' => [
+                                'id' => $agent
+                            ],
+                            'contact' => $contact,
+                        ];
+                    }    
+                }                   
+                $answer = [
+                    'status' => 'success',
+                    'data' => $clasifiedContacts
+                ];
             }
-            
-            $answer = [
-                'status' => 'success',
-                'data' => $clasifiedContacts
-            ];
-            
             
         } else {
             
@@ -57,7 +60,18 @@ class ContactController extends Controller
         $BPoints = [];
 
         foreach($contacts as $contact) {
-            $contact->_trend = $contact->distanceTo( $zipCodeA ) - $contact->distanceTo( $zipCodeB );
+            $toA = $contact->distanceTo( $zipCodeA );
+            $toB = $contact->distanceTo( $zipCodeB );
+            
+            if($toA == -1 || $toB == -1) {
+                return [
+                    'status' => 'error',
+                    'message' => 'zip code not found'
+                ];
+                // TODO: Throw error instead of returning value
+            }
+            
+            $contact->_trend = $toA - $toB;
         }
 
         // Sort the points according to the treding
