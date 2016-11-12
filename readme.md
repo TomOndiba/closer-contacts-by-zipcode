@@ -1,5 +1,7 @@
 # Closer contacts by zipcode
 
+npm install
+
 php artisan zipcode:cache
 
 

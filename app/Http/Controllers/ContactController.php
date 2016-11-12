@@ -31,12 +31,18 @@ class ContactController extends Controller
                 }    
             }
             
-            $answer = $clasifiedContacts;
+            $answer = [
+                'status' => 'success',
+                'data' => $clasifiedContacts
+            ];
             
             
         } else {
             
-            // TODO, se deben proporcionar dos zip codes
+            $answer = [
+                'status' => 'error',
+                'message' => 'The service requires 2 zip codes'
+            ];
             
         }
         
