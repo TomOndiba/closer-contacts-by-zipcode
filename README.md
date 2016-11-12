@@ -7,7 +7,7 @@ The goal of this example is to match agents vs clients based on their zip codes
 
 ## Running the project
 
-Once the project has been cloned into a local folder, it can be easily run be executing PHP built-in server
+Once the project has been cloned into a local folder, it can be easily run by executing PHP built-in server
 php -S localhost:8080
 
 For the seak of simplicity the project has been configured to use a SQlite as database
@@ -75,7 +75,7 @@ Source files:
 
 ##### GET /
 
-Provides a form with two inputs and a match button. Both input are for a single zip code, after clicking the match button an ajax request is done to the API. Once the API responses with an array of objects, they table body is created. 
+Provides a form with two inputs and a match button. Both input are for a single zip code, after clicking the match button an ajax request is done to the API. Once the API responses with an array of objects, the table body is created and a Google Map rendered. 
 
 All of this is handle by a Vue.js app. 
 
