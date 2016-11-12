@@ -15,5 +15,7 @@
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vue-google-maps": "^0.1.21"
+  }
 }

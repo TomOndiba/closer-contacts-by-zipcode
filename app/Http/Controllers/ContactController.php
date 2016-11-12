@@ -8,7 +8,7 @@ use \App\Contact;
 class ContactController extends Controller
 {
     
-    function getByCloserZipCode($zipcodes)
+    function getByClosestZipCode($zipcodes)
     {
         
         $zipcodes = explode(',', $zipcodes);
@@ -17,7 +17,7 @@ class ContactController extends Controller
         if( count($zipcodes) == 2 ) {
         
             $contacts = Contact::all()->all();
-            $match = $this->_matchCloser($contacts, $zipcodes[0], $zipcodes[1]);
+            $match = $this->_matchClosest($contacts, $zipcodes[0], $zipcodes[1]);
             $clasifiedContacts = [];
             $agents = ['A', 'B'];
             foreach($agents as $agent) {
@@ -50,7 +50,7 @@ class ContactController extends Controller
 
     }
     
-    function _matchCloser($contacts, $zipCodeA, $zipCodeB) {
+    function _matchClosest($contacts, $zipCodeA, $zipCodeB) {
         
         $n = sizeof($contacts);
         $APoints = [];

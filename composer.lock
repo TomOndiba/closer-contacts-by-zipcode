@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ed9df8b872992035f068a7fe461a635a",
-    "content-hash": "76036da3b5b55b91dbe1e1affa01bf9e",
+    "hash": "01527106007152f2a978b09bf9bf00c0",
+    "content-hash": "8d89f23043254c7246ed388355c115f6",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -985,6 +985,79 @@
             "time": "2016-10-02 15:51:17"
         },
         {
+            "name": "rinvex/repository",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rinvex/repository.git",
+                "reference": "32e808bc19d2ae322f62027a75e0f9cc1474ef2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rinvex/repository/zipball/32e808bc19d2ae322f62027a75e0f9cc1474ef2b",
+                "reference": "32e808bc19d2ae322f62027a75e0f9cc1474ef2b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "5.1.*|5.2.*|5.3.*",
+                "illuminate/contracts": "5.1.*|5.2.*|5.3.*",
+                "illuminate/database": "5.1.*|5.2.*|5.3.*",
+                "illuminate/events": "5.1.*|5.2.*|5.3.*",
+                "illuminate/support": "5.1.*|5.2.*|5.3.*",
+                "php": ">=5.5.9"
+            },
+            "suggest": {
+                "illuminate/pagination": "Required to paginate the result set."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rinvex\\Repository\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rinvex LLC",
+                    "email": "help@rinvex.com",
+                    "homepage": "https://rinvex.com"
+                },
+                {
+                    "name": "Abdelrahman Omran",
+                    "email": "me@omranic.com",
+                    "homepage": "https://omranic.com",
+                    "role": "Project Lead"
+                },
+                {
+                    "name": "The Generous PHP Community",
+                    "homepage": "https://github.com/rinvex/repository/contributors"
+                }
+            ],
+            "description": "Rinvex Repository is a simple, intuitive, and smart implementation of Active Repository with extremely flexible & granular caching system for Laravel, used to abstract the data layer, making applications more flexible to maintain.",
+            "homepage": "https://rinvex.com/marketplace/rinvex-repository/",
+            "keywords": [
+                "cache",
+                "contract",
+                "eloquent",
+                "granular",
+                "interface",
+                "intuitive",
+                "laravel",
+                "pattern",
+                "repository",
+                "rinvex"
+            ],
+            "time": "2016-08-05 22:40:10"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.4.3",
             "source": {
@@ -1816,6 +1889,34 @@
                 "dump"
             ],
             "time": "2016-10-18 15:46:07"
+        },
+        {
+            "name": "uikit/uikit",
+            "version": "2.27.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uikit/uikit.git",
+                "reference": "c43bd2fe9fe59c1b0df92a830fac7a3e9e011db5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uikit/uikit/zipball/c43bd2fe9fe59c1b0df92a830fac7a3e9e011db5",
+                "reference": "c43bd2fe9fe59c1b0df92a830fac7a3e9e011db5",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.27-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "UIkit is a lightweight and modular front-end framework for developing fast and powerful web interfaces.",
+            "homepage": "http://getuikit.com/",
+            "time": "2016-10-24 07:49:19"
         },
         {
             "name": "vlucas/phpdotenv",
