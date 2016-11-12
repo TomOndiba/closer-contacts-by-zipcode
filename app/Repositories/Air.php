@@ -2,6 +2,12 @@
 
 namespace App\Repositories;
 
+/*
+ *
+ * Cache class
+ * Use:
+ *   $hardCalculation = Air::get('hard-calculation-id', function() { return $someHeavyMath; });
+*/
 class Air {
  
     private $elements = array();

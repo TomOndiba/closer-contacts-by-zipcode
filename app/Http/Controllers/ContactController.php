@@ -11,6 +11,10 @@ use \App\Repositories\ZipcodeRepository;
 class ContactController extends Controller
 {
     
+    /*
+     * Handle the web input and output
+     *   It is the responsible of calling the match algorithm
+    */
     function getByClosestZipCode($zipcodes)
     {
         // This function assumes all the agents zip codes has been already cached
@@ -23,14 +27,19 @@ class ContactController extends Controller
         $zipcodes = explode(',', $zipcodes);
         $answer = [];
         
+        // Validates the input has two zip codes
         if( count($zipcodes) == 2 ) {
         
+            // Call the match algorithm!!
+            // Here is where the magic happens
             $contacts = Contact::all()->all();
             $match = $this->_matchClosest($contacts, $zipcodes[0], $zipcodes[1]);
             
             if( ISSET($match['status']) && $match['status'] == 'error' ) {
                 $answer = $match;             
             } else {                
+                
+                // If the match was correct, build the answer                
                 $clasifiedContacts = [];
                 $agents = ['A', 'B'];
                 foreach($agents as $agent) {
@@ -75,12 +84,17 @@ class ContactController extends Controller
 
     }
     
+    /*
+     * match agents vs clients based on their zip codes
+    */
     function _matchClosest($contacts, $zipCodeA, $zipCodeB) {
         
         $n = sizeof($contacts);
         $APoints = [];
         $BPoints = [];
 
+        // Step 1: Assign a trend index. The most this trend index is negative, the most
+        //   the contact should be assigned to A. Otherwise B.
         foreach($contacts as $contact) {
             $toA = $contact->distanceTo( $zipCodeA );
             $toB = $contact->distanceTo( $zipCodeB );
@@ -99,7 +113,7 @@ class ContactController extends Controller
         
         
 
-        // Sort the points according to the treding
+        // Step 2: Sort the points according to their trend
         usort($contacts, function($m, $n) use ($zipCodeA, $zipCodeB)
         {
             if($m->_trend == $n->_trend) {
@@ -109,8 +123,8 @@ class ContactController extends Controller
             }
         });
 
-        // Assign the points to A or B according
-        // to their location inside the array of points
+        // Step 3: Assign the points to A or B according
+        // to their location inside the array of contacts
         $middle = floor($n/2);
         if($n % 2 == 0) {
             $APoints = array_slice($contacts, 0, $middle);

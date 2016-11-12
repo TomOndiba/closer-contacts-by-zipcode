@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 use \App\Repositories\Air;
 
+/*
+ * Zip code math
+*/
 class ZipcodeRepository {
  
     protected function __construct()
@@ -18,6 +21,9 @@ class ZipcodeRepository {
     {
     }
     
+    /*
+     * Calculate the distance between two zip codes
+    */
     static function calculateDistanceBetweenZipCodes($zipCodeA, $zipCodeB) {
         
         return Air::get($zipCodeA . '-' . $zipCodeB, function() use ($zipCodeA, $zipCodeB) {
@@ -73,6 +79,9 @@ class ZipcodeRepository {
         
     }
     
+    /*
+     * Convert a zip code to latitude longitude
+    */
     static function zipcodeToLatLng($zipcode) {
         
         return Air::get($zipcode.'toLatLng', function() use ($zipcode) {

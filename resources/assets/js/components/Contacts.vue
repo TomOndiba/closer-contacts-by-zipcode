@@ -57,6 +57,10 @@
         methods: {
           getMatchedContacts($event) {
           
+            /*
+             * API call to match algorithm
+            */
+          
             $event.preventDefault();
           
             var $_self = this;
@@ -80,6 +84,10 @@
               });
           },
           drawMap(contacts, agents) {
+          
+            /*
+             * Draw Google map, given contacts and agents
+            */
             
             // Get an approximate center by calculating the average
             var avglat = 0; var avglng = 0;
