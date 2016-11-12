@@ -27,7 +27,7 @@ It was included a custom command for feeding the zipcodes table, in order to exe
 
 php artisan zipcode:cache
 
-Steps:
+Steps: 
 1. Truncate zipcodes table
 2. Get a list of the zip codes used by the contacts
 3. Call an external API in order to convert the zip codes to latitude-longitude (API provider: https://www.zipcodeapi.com/) 
