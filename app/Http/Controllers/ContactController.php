@@ -8,25 +8,59 @@ use \App\Contact;
 class ContactController extends Controller
 {
     
-    function getByCloserZipCode()
+    function getByCloserZipCode($zipcodes)
     {
         
-        $contacts = Contact::all()->toArray();
+        $zipcodes = explode(',', $zipcodes);
+        $answer = [];
+        
+        if( count($zipcodes) == 2 ) {
+        
+            $contacts = Contact::all()->all();
+            $match = $this->_matchCloser($contacts, $zipcodes[0], $zipcodes[1]);
+            $clasifiedContacts = [];
+            $agents = ['A', 'B'];
+            foreach($agents as $agent) {
+                foreach($match[$agent] as $contact) {
+                    $clasifiedContacts[] = [
+                        'agent' => [
+                            'id' => $agent
+                        ],
+                        'contact' => $contact,
+                    ];
+                }    
+            }
+            
+            $answer = $clasifiedContacts;
+            
+            
+        } else {
+            
+            // TODO, se deben proporcionar dos zip codes
+            
+        }
+        
+        return $answer;
+
+    }
+    
+    function _matchCloser($contacts, $zipCodeA, $zipCodeB) {
+        
         $n = sizeof($contacts);
         $APoints = [];
         $BPoints = [];
-        
-        foreach($contacts as $contact) {            
-            $contact->trend = $contact->distanceTo(10000) - $distanceTo(20000);
+
+        foreach($contacts as $contact) {
+            $contact->_trend = $contact->distanceTo( $zipCodeA ) - $contact->distanceTo( $zipCodeB );
         }
-        
+
         // Sort the points according to the treding
         usort($contacts, function($m, $n)
         {
-            if($m.trend == $n.trend) {
-                return (hasTheLongestDistance($m,$n)==$m)?1:-1;
+            if($m->_trend == $n->_trend) {
+                return ($this->_hasTheLongestDistance($m,$n)==$m)?1:-1;
             } else {
-                return ($m.trending - $n.trending);
+                return ($m->_trend - $n->_trend);
             }
         });
 
@@ -41,39 +75,37 @@ class ContactController extends Controller
                 $APoints = array_slice($contacts, 0, $middle);
                 $BPoints = array_slice($contacts, $middle);
             }
-            
+
             // If the number of contacts is odd, the contact in the
             //   middle is assigned to its closest agent
             $contact = $contacts[$middle];
-            if($contact->trend < 0) {
+            if($contact->_trend < 0) {
                 $APoints[] = $contact;
             } else {
                 $BPoints[] = $contact;
             }
         }
 
-        $answer = [
+        return [
           'A' => $APoints,
           'B' => $BPoints
         ];
         
-        return $answer;
-
     }
 
-    function hasTheLongestDistance($m, $n) {
+    function _hasTheLongestDistance($m, $n) {
 
         $maxDistance;
-        $_obj = m;
+        $_obj = $m;
         $maxDistance = max($m->x, $n->x);
 
-        if($maxDistance < $n.x) {
+        if($maxDistance < $n->x) {
             $_obj = $n;
-            $maxDistance = $n.x;
+            $maxDistance = $n->x;
         }
-        if($maxDistance < $n.y) {
+        if($maxDistance < $n->y) {
             $_obj = $n;
-            $maxDistance = $n.y;
+            $maxDistance = $n->y;
         }
 
         return $_obj;

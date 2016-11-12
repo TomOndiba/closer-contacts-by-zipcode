@@ -17,4 +17,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
-Route::get('/contact/by-closer-zip-code', 'ContactController@getByCloserZipCode')->name('contact-by-closer-zip-code');
+Route::get('/contact/match-closer/{zipcodes}', 'ContactController@getByCloserZipCode')->name('contact-by-closer-zip-code');

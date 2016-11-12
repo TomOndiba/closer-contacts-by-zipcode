@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use \App\Zipcode;
 use \App\Contact;
+use \DB;
 
 class CacheZipcodes extends Command
 {
@@ -40,20 +41,20 @@ class CacheZipcodes extends Command
     public function handle()
     {
         
+        DB::table('zipcodes')->truncate();
+        
         $ZIP_CODE_API_KEY = env('ZIP_CODE_API_KEY', 'mysql');
         $api = 'https://www.zipcodeapi.com/rest/'.$ZIP_CODE_API_KEY.'/multi-info.json/{codes}/degrees';
         
         $codes = Contact::pluck("zipcode")->unique()->implode(',');
-        $locations = file_get_contents(str_replace('{codes}', $codes, $api));
-        
+        $locations = json_decode(file_get_contents(str_replace('{codes}', $codes, $api)));
         $zipcodes = [];
         
         foreach($locations as $zipcode=>$location) {
-            
             $zipcodes[] = [
                 'zipcode' => $zipcode,
-                'latitude' => $location['lat'],
-                'longitude' => $location['lng'],
+                'latitude' => $location->lat,
+                'longitude' => $location->lng,
             ];
         }
         
